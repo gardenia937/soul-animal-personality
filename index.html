@@ -437,9 +437,18 @@
   /* ---------------- boot ---------------- */
   function boot() {
     load();
+    try {
+      var pa = JSON.parse(localStorage.getItem("sap_payment_attempt") || "null");
+      if (pa && pa.mode === "checkout") { state.paymentAttempt = pa; }
+    } catch (e) { /* ignore */ }
     fetchInfo().then(function () {
       if (state.step === "quiz") { enterQuiz(false); }
-      else if (state.step === "done" || state.step === "working") { renderLocked(); }
+      else if (state.step === "done" || state.step === "working") {
+        renderLocked();
+        if (state.paymentAttempt && state.paymentAttempt.mode === "checkout") {
+          pollCheckout(state.paymentAttempt.orderId, 0);
+        }
+      }
       else if (state.step === "result") { resumeResult(); }
       else { show("screen-cover"); }
     }).catch(function () {
@@ -673,6 +682,11 @@
 
   function beginPayment() {
     if (state.busy) { return; }
+    if (state.paymentAttempt && state.paymentAttempt.mode === "checkout" && (state.step === "working" || state.step === "done")) {
+      renderWorking("Payment in progress", "A payment for this session was already started. Checking its status now — complete it in the PayPal window if it's still open.");
+      pollCheckout(state.paymentAttempt.orderId, 0);
+      return;
+    }
     state.busy = true;
     renderWorking("Preparing your payment", "Creating a secure payment link...");
     ensureSession().then(function () {
@@ -724,7 +738,7 @@
 
   function pollCheckout(orderId, attempt) {
     if (!state.paymentAttempt || state.paymentAttempt.mode !== "checkout") { return; }
-    if (attempt > 15) { return; }
+    if (attempt > 450) { return; }
     verifyPayment("checkout", { orderId: orderId }).then(function (res) {
       if (res && res.unlocked) { return; }
       if (res && res.canRetry) { setTimeout(function () { pollCheckout(orderId, attempt + 1); }, 4000); }
@@ -1021,7 +1035,8 @@
   window.addEventListener("pageshow", function () {
     var pa = null;
     try { pa = JSON.parse(localStorage.getItem("sap_payment_attempt") || "null"); } catch (e) { pa = null; }
-    if (pa && pa.mode === "checkout" && state.step === "working" && state.paymentAttempt && state.paymentAttempt.mode === "checkout") {
+    if (pa && pa.mode === "checkout") { state.paymentAttempt = pa; }
+    if (pa && pa.mode === "checkout" && state.step === "working") {
       pollCheckout(pa.orderId, 0);
     }
   });
