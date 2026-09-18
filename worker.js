@@ -273,14 +273,35 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 function corsHeaders(env) {
   const allowed = (env && env.ALLOWED_ORIGIN) || "*";
   const headers = {
-    "Access-Control-Allow-Origin": allowed,
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Max-Age": "86400",
     "Cache-Control": "no-store"
   };
-  if (allowed !== "*") { headers["Vary"] = "Origin"; }
+  if (allowed === "*") {
+    headers["Access-Control-Allow-Origin"] = "*";
+    return headers;
+  }
+  headers["Access-Control-Allow-Origin"] = allowed;
+  headers["Vary"] = "Origin";
   return headers;
+}
+
+function finalizeCors(response, request, env) {
+  const allowed = (env && env.ALLOWED_ORIGIN) || "*";
+  if (allowed === "*") { return response; }
+  const origin = request ? request.headers.get("Origin") : null;
+  if (origin && origin !== allowed) {
+    response.headers.delete("Access-Control-Allow-Origin");
+  }
+  return response;
+}
+
+function corsPreflightAllowed(request, env) {
+  const allowed = (env && env.ALLOWED_ORIGIN) || "*";
+  if (allowed === "*") { return true; }
+  const origin = request ? request.headers.get("Origin") : null;
+  return !!origin && origin === allowed;
 }
 
 function json(data, status, env) {
@@ -925,13 +946,15 @@ export default {
     const path = url.pathname.replace(/\/+$/, "") || "/";
 
     if (request.method === "OPTIONS") {
+      if (!corsPreflightAllowed(request, env)) { return new Response(null, { status: 403 }); }
       return new Response(null, { status: 204, headers: corsHeaders(env) });
     }
 
+    let response;
     try {
       // Public info endpoint (no session required)
       if (request.method === "GET" && path === "/api/info") {
-        return json({
+        response = json({
           success: true,
           product: "Your Soul Animal Personality",
           price: priceValue(env),
@@ -942,33 +965,44 @@ export default {
           paypalMe: resolveMode(env) === "paypalme" ? ("https://www.paypal.com/paypalme/" + encodeURIComponent(paypalMeUser(env)) + "/" + priceValue(env)) : null,
           autoVerify: paypalAreConfigured(env)
         }, 200, env);
-      }
-
-      if (request.method === "GET" && path === "/api/questions") { return await handleGetQuestions(env, url); }
-      if (request.method === "GET" && path === "/api/result") { return await handleGetResult(env, url); }
-
-      if (request.method === "POST") {
+      } else if (request.method === "GET" && path === "/api/questions") {
+        response = await handleGetQuestions(env, url);
+      } else if (request.method === "GET" && path === "/api/result") {
+        response = await handleGetResult(env, url);
+      } else if (request.method === "POST") {
         const body = (await readBody(request)) || {};
 
         if (path === "/api/session") {
           if (env.SESSIONS && request.headers.get("CF-Connecting-IP")) {
             const limited = await rateLimit(env, "rate:session:" + request.headers.get("CF-Connecting-IP"), 20, 600);
-            if (limited) { return fail("RATE_LIMITED", "Too many sessions. Try again later.", 429, env); }
+            if (limited) { response = fail("RATE_LIMITED", "Too many sessions. Try again later.", 429, env); }
+            else { response = await handleCreateSession(env); }
+          } else {
+            response = await handleCreateSession(env);
           }
-          return await handleCreateSession(env);
+        } else if (path === "/api/answers") {
+          response = await handleSubmitAnswers(env, body);
+        } else if (path === "/api/payment/create") {
+          response = await handlePaymentCreate(env, body);
+        } else if (path === "/api/payment/verify") {
+          response = await handlePaymentVerify(env, body);
+        } else if (path === "/api/verify-webhook") {
+          response = await handleWebhook(env, request);
+        } else if (path === "/api/admin/manual-unlock") {
+          response = await handleAdminManualUnlock(env, body);
+        } else if (path === "/api/admin/status") {
+          response = await handleAdminStatus(env, body);
+        } else {
+          response = fail("NOT_FOUND", "Endpoint not found.", 404, env);
         }
-        if (path === "/api/answers") { return await handleSubmitAnswers(env, body); }
-        if (path === "/api/payment/create") { return await handlePaymentCreate(env, body); }
-        if (path === "/api/payment/verify") { return await handlePaymentVerify(env, body); }
-        if (path === "/api/verify-webhook") { return await handleWebhook(env, request); }
-        if (path === "/api/admin/manual-unlock") { return await handleAdminManualUnlock(env, body); }
-        if (path === "/api/admin/status") { return await handleAdminStatus(env, body); }
+      } else {
+        response = fail("NOT_FOUND", "Endpoint not found.", 404, env);
       }
-
-      return fail("NOT_FOUND", "Endpoint not found.", 404, env);
     } catch (e) {
       console.error("worker error", e && e.message);
-      return fail("SERVER_ERROR", "Something went wrong on the server.", 500, env);
+      response = fail("SERVER_ERROR", "Something went wrong on the server.", 500, env);
     }
+
+    return finalizeCors(response, request, env);
   }
 };
