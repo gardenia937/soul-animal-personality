@@ -965,13 +965,14 @@ function show(screen) {
         (chall ? '<div class="match-card challenging"><div class="mc-emoji">' + chall.emoji + "</div><div><div class=\"mc-tag\">Your fun challenge</div><h4>" + chall.name + " — " + chall.title + '</h4><p>' + chall.blurb + "</p></div></div>" : "") +
       "</div></div>" +
 
-      '<div class="share-card">' +
-        "<h3>📣 Share Your Result</h3>" +
-        "<p>I just found out I'm a " + r.name + " personality! " + r.emoji + " What's yours?<br>Try the quiz and find your soul animal.</p>" +
-        '<button class="button b-green" style="width:100%;min-height:52px" onclick="window.__share()">Share Result</button>' +
-        (shared
-          ? '<button class="button b-blue" style="margin-top:12px;min-height:52px" onclick="window.__startOwnTest()">Take the Quiz — Find YOUR Animal 🐾</button>'
-          : '<button class="button b-ghost sm" style="margin-top:12px" onclick="window.__fresh()">Retake the quiz</button>') +
+      (shared
+        ? '<div class="share-card"><button class="button b-blue" style="width:100%;min-height:52px" onclick="window.__startOwnTest()">Take the Quiz — Find YOUR Animal 🐾</button></div>'
+        : '<div class="share-card">' +
+            "<h3>📣 Share Your Result</h3>" +
+            "<p>I just found out I'm a " + r.name + " personality! " + r.emoji + " What's yours?<br>Try the quiz and find your soul animal.</p>" +
+            '<button class="button b-green" style="width:100%;min-height:52px" onclick="window.__share()">Share Result</button>' +
+            '<button class="button b-ghost sm" style="margin-top:12px" onclick="window.__fresh()">Retake the quiz</button>' +
+          "</div>") +
       "</div>";
 
     show("screen-result");
