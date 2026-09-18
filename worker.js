@@ -565,7 +565,9 @@ async function paypalCreateOrder(env, sessionId) {
       application_context: {
         brand_name: "Your Soul Animal Personality",
         user_action: "PAY_NOW",
-        shipping_preference: "NO_SHIPPING"
+        shipping_preference: "NO_SHIPPING",
+        return_url: (env && env.ALLOWED_ORIGIN && env.ALLOWED_ORIGIN !== "*") ? env.ALLOWED_ORIGIN + "/" : null,
+        cancel_url: (env && env.ALLOWED_ORIGIN && env.ALLOWED_ORIGIN !== "*") ? env.ALLOWED_ORIGIN + "/" : null
       }
     })
   });
@@ -581,6 +583,20 @@ async function paypalGetOrder(env, orderId) {
   const token = await paypalToken(env);
   const res = await fetch(paypalBase(env) + "/v2/checkout/orders/" + encodeURIComponent(orderId), {
     headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" }
+  });
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok, data };
+}
+
+async function paypalCaptureOrder(env, orderId) {
+  const token = await paypalToken(env);
+  const res = await fetch(paypalBase(env) + "/v2/checkout/orders/" + encodeURIComponent(orderId) + "/capture", {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+      "PayPal-Request-Id": "sap-capture-" + orderId + "-" + now()
+    }
   });
   const data = await res.json().catch(() => ({}));
   return { ok: res.ok, data };
@@ -811,7 +827,12 @@ async function handlePaymentVerify(env, body) {
     try {
       const orderRes = await paypalGetOrder(env, orderId);
       if (!orderRes.ok) { return fail("PAYMENT_PENDING", "Order not found yet.", 200, env); }
-      const check = orderPaidAndMatching(orderRes.data, sessionId, price);
+      let check = orderPaidAndMatching(orderRes.data, sessionId, price);
+      if (!check.paid && orderRes.data.status === "APPROVED") {
+        await paypalCaptureOrder(env, orderId);
+        const again = await paypalGetOrder(env, orderId);
+        check = orderPaidAndMatching(again.data, sessionId, price);
+      }
       if (!check.paid) { return fail("PAYMENT_PENDING", "Order has not been completed yet.", 200, env); }
       const didUnlock = await atomicUnlock(env, sessionId, {
         payment_id: check.captureId, payment_method: "paypal_orders_api", order_id: orderId
