@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your Soul Animal Personality | Fun Personality Quiz</title>
+<meta name="description" content="6 animals. 16 questions. Which one are you? Take the fun quiz and reveal your Soul Animal personality.">
+<meta name="theme-color" content="#FFF3D6">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦊</text></svg>">
+<meta property="og:title" content="Your Soul Animal Personality">
+<meta property="og:description" content="6 animals. 16 questions. Which one are you?">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --cream:#FFF3D6;
+    --cream-2:#FFE9B8;
+    --ink:#2B2118;
+    --ink-soft:#6B5F51;
+    --pink:#FFC7DF;
+    --pink-deep:#FF7FB4;
+    --blue:#C9E5FF;
+    --blue-deep:#5AA8E6;
+    --green:#C9F2D8;
+    --green-deep:#3BB873;
+    --purple:#E4D6FB;
+    --purple-deep:#9C6FE0;
+    --orange:#FFC46B;
+    --white:#FFFFFF;
+    --radius:24px;
+    --shadow:0 10px 0 rgba(43,33,24,.12), 0 18px 40px rgba(43,33,24,.12);
+    --shadow-sm:0 5px 0 rgba(43,33,24,.10), 0 10px 22px rgba(43,33,24,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:
+      radial-gradient(1200px 500px at 110% -10%, rgba(255,127,180,.18), transparent 60%),
+      radial-gradient(900px 450px at -20% 10%, rgba(90,168,230,.16), transparent 55%),
+      radial-gradient(700px 400px at 110% 90%, rgba(156,111,224,.14), transparent 55%),
+      radial-gradient(600px 380px at -10% 95%, rgba(59,184,115,.14), transparent 55%),
+      var(--cream);
+    color:var(--ink);
+    min-height:100dvh;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:calc(24px + env(safe-area-inset-bottom));
+  }
+  #app{max-width:560px;margin:0 auto;padding:20px 18px calc(24px + env(safe-area-inset-bottom));position:relative}
+  .screen{display:none;flex-direction:column}
+  .screen.active{display:flex;animation:screenIn .35s ease both}
+  @keyframes screenIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ---------- text ---------- */
+  .kicker{font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+  h1.title{font-size:34px;line-height:1.12;font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+  h1.title .tail{display:inline-block;transform:rotate(-6deg)}
+  .sub{font-size:17px;line-height:1.5;color:var(--ink);font-weight:600;margin-bottom:8px}
+  .muted{font-size:13.5px;color:var(--ink-soft);font-weight:600}
+  .small-note{font-size:12.5px;color:var(--ink-soft);font-weight:600;line-height:1.45}
+  .safe-area-frame{
+    background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:26px 20px;width:100%;text-align:center;
+  }
+  .safe-area-frame.left{text-align:left}
+  .emoji-row{font-size:52px;line-height:1;margin:6px 0 14px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .chip{font-size:13px;font-weight:800;padding:8px 12px;border-radius:999px;background:var(--cream);border:2px solid var(--cream-2);color:var(--ink)}
+  .button{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    font-family:inherit;font-size:17px;font-weight:900;color:#fff;letter-spacing:.01em;
+    background:linear-gradient(180deg,#FF9EC2,#FF6FA8);border:none;border-radius:18px;
+    padding:18px 20px;min-height:56px;cursor:pointer;
+    box-shadow:0 7px 0 #E05290,0 14px 24px rgba(224,82,144,.28);
+    transition:transform .09s ease,box-shadow .09s ease,filter .15s ease;
+    text-decoration:none;text-align:center;line-height:1.2;
+  }
+  .button:active{transform:translateY(5px);box-shadow:0 2px 0 #E05290,0 6px 12px rgba(224,82,144,.2)}
+  .button:hover{filter:brightness(1.05)}
+  .button.b-blue{background:linear-gradient(180deg,#86C5F0,#4E9FE3);box-shadow:0 7px 0 #2F79B8,0 14px 24px rgba(47,121,184,.26)}
+  .button.b-blue:active{box-shadow:0 2px 0 #2F79B8,0 6px 12px rgba(47,121,184,.2)}
+  .button.b-green{background:linear-gradient(180deg,#6FD09A,#2FAE68);box-shadow:0 7px 0 #1C8050,0 14px 24px rgba(28,128,80,.26)}
+  .button.b-green:active{box-shadow:0 2px 0 #1C8050,0 6px 12px rgba(28,128,80,.2)}
+  .button.b-purple{background:linear-gradient(180deg,#B794EF,#8F5CD8);box-shadow:0 7px 0 #6A41A8,0 14px 24px rgba(106,65,168,.26)}
+  .button.b-purple:active{box-shadow:0 2px 0 #6A41A8,0 6px 12px rgba(106,65,168,.2)}
+  .button.b-ghost{background:var(--white);color:var(--ink);box-shadow:0 5px 0 rgba(43,33,24,.10),0 10px 20px rgba(43,33,24,.08);border:2px solid var(--cream-2)}
+  .button.b-ghost:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(43,33,24,.10)}
+  .button.sm{font-size:15px;padding:13px 16px;min-height:46px;border-radius:15px}
+  .button.bounce{animation:btnBounce .45s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes btnBounce{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+  .btn-pay{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .btn-pay em{font-style:normal;font-size:12.5px;font-weight:700;opacity:.9}
+
+  /* ---------- quiz ---------- */
+  .quiz-head{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+  .counter{font-size:13px;font-weight:800;color:var(--ink-soft);letter-spacing:.04em}
+  .paw-track{display:flex;gap:7px;align-items:center;flex-wrap:nowrap;overflow-x:visible;justify-content:center}
+  .paw{width:26px;height:26px;font-size:20px;line-height:26px;text-align:center;opacity:.18;filter:grayscale(1);transition:opacity .3s ease,transform .3s ease;flex:0 0 26px}
+  .paw.done{opacity:1;filter:none;transform:scale(1.15)}
+  .paw.half{opacity:.5;filter:grayscale(.4)}
+  .question-card{
+    background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:26px 20px;margin-top:4px;
+  }
+  .q-text{font-size:21px;line-height:1.35;font-weight:900;letter-spacing:-.01em;margin-bottom:4px}
+  .q-topic{font-size:12px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+  .options{display:grid;gap:12px;margin-top:20px}
+  .option{
+    display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;
+    font-family:inherit;font-size:16px;font-weight:700;color:var(--ink);line-height:1.45;
+    background:var(--white);border:none;border-radius:18px;padding:16px 14px;min-height:66px;cursor:pointer;
+    transition:transform .1s ease,box-shadow .1s ease,filter .15s ease;
+  }
+  .option .letter{flex:0 0 30px;height:30px;border-radius:10px;font-size:14px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .option:active{transform:translateY(3px)}
+  .option:hover{filter:brightness(1.03)}
+  .option.bounce{animation:optBounce .4s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes optBounce{0%{transform:scale(1)}45%{transform:scale(1.03)}100%{transform:scale(1)}}
+  .option.o0{background:linear-gradient(180deg,#FFE3EF,#FFD1E5);box-shadow:0 5px 0 #F4A9CA,0 10px 18px rgba(244,169,202,.25)}
+  .option.o0 .letter{background:var(--pink-deep)}
+  .option.o1{background:linear-gradient(180deg,#DFF0FF,#C9E5FF);box-shadow:0 5px 0 #8FC3EC,0 10px 18px rgba(143,195,236,.25)}
+  .option.o1 .letter{background:var(--blue-deep)}
+  .option.o2{background:linear-gradient(180deg,#DFF7E8,#C9F2D8);box-shadow:0 5px 0 #86D2A6,0 10px 18px rgba(134,210,166,.25)}
+  .option.o2 .letter{background:var(--green-deep)}
+  .option.o3{background:linear-gradient(180deg,#F0E7FD,#E4D6FB);box-shadow:0 5px 0 #BE9DF0,0 10px 18px rgba(190,157,240,.25)}
+  .option.o3 .letter{background:var(--purple-deep)}
+  .quiz-foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+  .back-btn{
+    font-family:inherit;font-size:15px;font-weight:800;color:var(--ink-soft);
+    background:none;border:none;padding:12px;border-radius:12px;cursor:pointer;min-height:44px;
+  }
+  .back-btn:active{background:rgba(43,33,24,.06)}
+
+  /* ---------- locked / done ---------- */
+  .lock-badge{font-size:52px;line-height:1}
+  .check-list{list-style:none;display:grid;gap:10px;text-align:left;margin:18px 0}
+  .check-list li{display:flex;gap:10px;align-items:center;font-size:15px;font-weight:700;line-height:1.4}
+  .check-list li span{flex:0 0 24px;height:24px;border-radius:50%;background:var(--green);color:#1C8050;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .price-tag{font-size:13px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  .price-tag b{color:var(--pink-deep);font-size:16px;letter-spacing:0}
+  .dev-panel{margin-top:16px;padding:14px;border-radius:16px;background:repeating-linear-gradient(45deg,#FFF247,#FFF247 10px,#FFE23E 10px,#FFE23E 20px);text-align:left}
+  .dev-panel h4{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#7A6400;margin-bottom:10px}
+  .dev-panel .dev-btns{display:grid;gap:8px}
+  .dev-panel .dbtn{font-family:inherit;font-size:13px;font-weight:800;color:#fff;border:none;border-radius:10px;padding:11px 14px;cursor:pointer;min-height:40px;text-align:left}
+  .dbtn.s{background:#22A45C}.dbtn.c{background:#D4644C}.dbtn.p{background:#C79A1E}.dbtn.f{background:#8A8896}
+
+  /* ---------- working / spinner ---------- */
+  .spinner{width:44px;height:44px;border-radius:50%;border:5px solid var(--cream-2);border-top-color:var(--pink-deep);margin:8px auto 18px;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .wsg{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .wait-note{font-size:14px;font-weight:700;color:var(--ink-soft);text-align:center;line-height:1.5}
+  .wait-actions{display:grid;gap:12px;margin-top:20px;width:100%}
+
+  /* ---------- result ---------- */
+  .result-hero{text-align:center;position:relative}
+  .big-animal{font-size:104px;line-height:1;margin:4px 0 6px;animation:popIn .6s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes popIn{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+  .roar{font-size:36px;font-weight:900;letter-spacing:-.02em;margin-bottom:4px}
+  .r-title{display:inline-block;font-size:14px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:linear-gradient(90deg,#FF7FB4,#9C6FE0);padding:9px 16px;border-radius:999px;margin:8px 0 10px}
+  .r-line{font-size:16px;color:var(--ink-soft);font-weight:700;margin-top:6px}
+  .affinity{display:grid;gap:12px;margin:24px 0 8px}
+  .aff-row{display:grid;grid-template-columns:34px 56px 1fr 46px;align-items:center;gap:10px}
+  .aff-emoji{font-size:26px;text-align:center}
+  .aff-name{font-size:13px;font-weight:900;letter-spacing:.02em;text-transform:capitalize}
+  .aff-bar{position:relative;height:18px;border-radius:999px;background:rgba(43,33,24,.08);overflow:hidden}
+  .aff-fill{position:absolute;inset:0 auto 0 0;width:0;border-radius:999px;background:linear-gradient(90deg,var(--affc,#FF9EC2),var(--affc2,#FF6FA8));transition:width 1.2s cubic-bezier(.22,.9,.28,1)}
+  .aff-pct{font-size:15px;font-weight:900;text-align:right}
+  .module{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:24px 20px;margin-top:16px}
+  .module h3{font-size:17px;font-weight:900;letter-spacing:-.01em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .module p{font-size:15px;line-height:1.6;font-weight:600;color:#3c3126;margin-bottom:10px}
+  .module .p-head{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin:12px 0 6px}
+  .traits-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+  .traits-list span{font-size:13px;font-weight:800;background:var(--cream);border:2px solid var(--cream-2);border-radius:999px;padding:7px 12px}
+  .strengths-list{list-style:none;display:grid;gap:8px}
+  .strengths-list li{font-size:15px;font-weight:700;line-height:1.45;padding-left:26px;position:relative}
+  .strengths-list li::before{content:"✦";position:absolute;left:4px;color:var(--green-deep);font-size:15px}
+  .funny-card{background:linear-gradient(180deg,#FFF3D6,#FFE9B8);border-radius:16px;padding:16px;margin-top:10px}
+  .funny-card .lbl{font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#9A7C2A;margin-bottom:6px}
+  .funny-card p{font-size:15px;color:var(--ink);margin:0}
+  .match-grid{display:grid;gap:12px}
+  .match-card{border-radius:16px;padding:16px;background:#EFF8FF;display:flex;gap:12px;align-items:flex-start}
+  .match-card.challenging{background:#FFEBE8}
+  .match-card .mc-emoji{font-size:32px}
+  .match-card h4{font-size:15px;font-weight:900;margin-bottom:2px}
+  .match-card .mc-tag{font-size:12px;font-weight:800;color:var(--blue-deep);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .match-card.challenging .mc-tag{color:#D4644C}
+  .match-card p{font-size:13.5px;line-height:1.55;font-weight:600;color:#3c3126;margin:0}
+
+  /* ---------- share ---------- */
+  .share-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:22px;margin-top:20px;text-align:center}
+  .share-card h3{font-size:18px;font-weight:900;margin-bottom:6px}
+  .share-card p{font-size:14.5px;color:var(--ink-soft);font-weight:600;line-height:1.5;margin-bottom:16px}
+  .share-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .share-actions .button{font-size:15px;padding:14px;min-height:52px}
+
+  /* ---------- banner / toast ---------- */
+  #banner-wrap{position:fixed;top:calc(14px + env(safe-area-inset-top));left:0;right:0;display:flex;flex-direction:column;gap:10px;align-items:center;z-index:80;pointer-events:none;padding:0 16px}
+  .banner{pointer-events:auto;max-width:520px;width:100%;border-radius:16px;padding:14px 16px;font-size:14.5px;font-weight:800;line-height:1.4;color:#fff;box-shadow:0 12px 30px rgba(0,0,0,.18);animation:slideDown .3s ease both;display:flex;gap:10px;align-items:center}
+  .banner.out{animation:slideUp .25s ease both}
+  .banner.ok{background:#22A45C}.banner.err{background:#D4503C}.banner.info{background:#2F79B8}.banner.warn{background:#C7900F}
+  .banner .bx{font-size:18px}
+  @keyframes slideDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+  @keyframes slideUp{to{opacity:0;transform:translateY(-14px)}}
+
+  /* ---------- confetti ---------- */
+  #confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:60}
+  #confetti i{position:absolute;top:-22px;left:50%;width:10px;height:14px;opacity:0;will-change:transform}
+  @keyframes confFall{0%{opacity:0;transform:translate3d(0,-20px,0) rotate(0)}8%{opacity:1}100%{opacity:.85;transform:translate3d(var(--tx),110vh,0) rotate(var(--rot))}}
+  #confetti i{animation:confFall var(--dur,3.4s) var(--delay,0s) cubic-bezier(.25,.46,.45,.94) forwards}
+
+  /* ---------- error ---------- */
+  .code-pill{display:inline-block;font-size:12px;font-weight:800;color:#fff;background:var(--ink-soft);border-radius:999px;padding:6px 12px;margin-top:12px;letter-spacing:.06em}
+  .err-icon{font-size:60px;line-height:1;margin-bottom:10px}
+
+  footer{max-width:560px;margin:0 auto;padding:26px 20px 20px;text-align:center}
+  footer p{font-size:12px;color:var(--ink-soft);font-weight:600;line-height:1.6}
+  footer a{color:inherit;font-weight:800}
+
+  .hidden{display:none!important}
+  @media (max-width:380px){
+    h1.title{font-size:29px}
+    .q-text{font-size:19px}
+    .option{font-size:15px;padding:14px 12px}
+  }
+  @media (min-width:760px){
+    #app{padding-top:34px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ============ COVER ============ -->
+  <section id="screen-cover" class="screen active">
+    <div class="safe-area-frame" style="padding:34px 20px 30px">
+      <div class="emoji-row">🦊🦉🐬🦁🦥🐺</div>
+      <h1 class="title">Your Soul <span class="tail">Animal</span> Personality</h1>
+      <p class="sub">6 animals. 16 questions. Which one are you?</p>
+      <p class="muted" style="margin-bottom:22px">Fun personality quiz • Takes about 2 minutes</p>
+      <button id="btn-start" class="button">Start the Test</button>
+      <p class="small-note" style="margin-top:16px">No account needed • Anonymous results • 100% original questions</p>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section id="screen-quiz" class="screen">
+    <div class="quiz-head">
+      <div class="counter" id="q-counter">Question 1 of 16</div>
+      <div class="paw-track" id="paw-track"></div>
+    </div>
+    <div class="question-card" id="question-card"></div>
+  </section>
+
+  <!-- ============ LOCKED / PAYMENT ============ -->
+  <section id="screen-done" class="screen">
+    <div class="safe-area-frame left" id="locked-box"></div>
+  </section>
+
+  <!-- ============ WORKING ============ -->
+  <section id="screen-working" class="screen">
+    <div class="safe-area-frame">
+      <div class="wsg" id="wsg-box"></div>
+    </div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section id="screen-result" class="screen">
+    <div id="result-box"></div>
+  </section>
+
+  <!-- ============ ERROR ============ -->
+  <section id="screen-error" class="screen">
+    <div class="safe-area-frame left" id="error-box"></div>
+  </section>
+
+</div>
+
+<div id="banner-wrap"></div>
+<div id="confetti"></div>
+
+<footer>
+  <p>Your Soul Animal Personality is a fun, entertainment-only quiz. It is not a medical, psychological, or diagnostic test, and it is not intended to replace professional advice.<br>No personal data is required. Sessions are anonymous and automatically expire.</p>
+  <p style="margin-top:8px"><a href="mailto:support@soulnimal.co" id="footer-mail">Contact Support</a> • <a href="https://www.paypal.com/paypalme/Katerina2099" rel="noopener" target="_blank">Pay via PayPal</a></p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ============================================================
+     CONFIG (frontend). No secrets are ever placed here.
+     Set API_BASE to your deployed Cloudflare Worker URL.
+     You can also override it for testing by visiting the page
+     with ?api=https://your-worker.workers.dev (stored locally).
+     ============================================================ */
+  var API_BASE = "https://your-worker-name.workers.dev";
+
+  var CONFIG = {
+    supportEmail: "support@soulnimal.co",
+    paypalMeUrl: "https://www.paypal.com/paypalme/Katerina2099",
+    productName: "Your Soul Animal Personality"
+  };
+
+  var LS_SESSION = "sap_session";
+  var LS_ANSWERS = "sap_answers";
+  var LS_IDX = "sap_idx";
+  var LS_STEP = "sap_step";
+  var LS_QCACHE = "sap_qcache";
+  var LS_SUBMITTED = "sap_submitted";
+  var AUTO_TTL = 1000 * 60 * 60 * 26; // 26h local guard vs 24h server TTL
+
+  var RESOLVED_API = resolveApiBase();
+
+  function resolveApiBase() {
+    try {
+      var stored = localStorage.getItem("sap_api_base");
+      if (stored && stored.indexOf("http") === 0) { return stored; }
+      var qp = new URLSearchParams(window.location.search).get("api");
+      if (qp && qp.indexOf("http") === 0) { localStorage.setItem("sap_api_base", qp); return qp; }
+    } catch (e) { /* storage unavailable */ }
+    return API_BASE;
+  }
+
+  var PREVIEW = [
+    { animal: "fox", name: "Fox", emoji: "🦊" },
+    { animal: "owl", name: "Owl", emoji: "🦉" },
+    { animal: "dolphin", name: "Dolphin", emoji: "🐬" },
+    { animal: "lion", name: "Lion", emoji: "🦁" },
+    { animal: "sloth", name: "Sloth", emoji: "🦥" },
+    { animal: "wolf", name: "Wolf", emoji: "🐺" }
+  ];
+
+  var state = {
+    sessionId: null,
+    questions: null,
+    answers: [],
+    idx: 0,
+    step: "cover",
+    info: null,       // { price, currency, mode, devMode, ... }
+    result: null,
+    submitted: false,
+    devMode: false,
+    busy: false,
+    paymentAttempt: null
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------------- storage ---------------- */
+  function save() {
+    try {
+      localStorage.setItem(LS_SESSION, state.sessionId || "");
+      localStorage.setItem(LS_ANSWERS, JSON.stringify(state.answers || []));
+      localStorage.setItem(LS_IDX, String(state.idx));
+      localStorage.setItem(LS_STEP, state.step);
+      localStorage.setItem(LS_SUBMITTED, state.submitted ? "1" : "0");
+      if (state.questions) { localStorage.setItem(LS_QCACHE, JSON.stringify({ sid: state.sessionId, q: state.questions })); }
+    } catch (e) { /* storage may be blocked; site still works in-memory */ }
+  }
+  function load() {
+    try {
+      var sid = localStorage.getItem(LS_SESSION);
+      var answers = JSON.parse(localStorage.getItem(LS_ANSWERS) || "[]");
+      var idx = parseInt(localStorage.getItem(LS_IDX) || "0", 10);
+      var step = localStorage.getItem(LS_STEP) || "cover";
+      var sub = localStorage.getItem(LS_SUBMITTED) === "1";
+      var cache = JSON.parse(localStorage.getItem(LS_QCACHE) || "null");
+      var storedStepAt = parseInt(localStorage.getItem("sap_updated_at") || "0", 10);
+      if (cache && cache.sid === sid) { state.questions = cache.q; }
+      if (sid) { state.sessionId = sid; }
+      if (Array.isArray(answers) && answers.length === 16) { state.answers = answers; }
+      if (!isNaN(idx) && idx >= 0 && idx <= 16) { state.idx = idx; }
+      state.submitted = sub;
+      state.step = step;
+      if (storedStepAt && Date.now() - storedStepAt > AUTO_TTL) { resetLocal(); }
+    } catch (e) { /* corrupted storage -> clean start */ resetLocal(); }
+  }
+  function resetLocal() {
+    try {
+      ["sap_session","sap_answers","sap_idx","sap_step","sap_qcache","sap_submitted","sap_updated_at","sap_payment_attempt"].forEach(function (k) { localStorage.removeItem(k); });
+    } catch (e) { /* ignore */ }
+    state.sessionId = null; state.questions = null; state.answers = []; state.idx = 0;
+    state.submitted = false; state.step = "cover"; state.result = null; state.paymentAttempt = null;
+  }
+  function touchStorage() {
+    try { localStorage.setItem("sap_updated_at", String(Date.now())); } catch (e) { /* ignore */ }
+  }
+
+  /* ---------------- ui helpers ---------------- */
+  function show(screen) {
+    var s = ["screen-cover","screen-quiz","screen-done","screen-working","screen-result","screen-error"];
+    s.forEach(function (id) { $(id).classList.remove("active"); });
+    $(screen).classList.add("active");
+    state.step = screen.replace("screen-", "");
+    touchStorage();
+    save();
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+
+  var bannerTimer = null;
+  function notify(msg, type) {
+    type = type || "info";
+    var icons = { ok: "✅", err: "⚠️", info: "💬", warn: "🔔" };
+    var wrap = $("banner-wrap");
+    var b = document.createElement("div");
+    b.className = "banner " + type;
+    b.innerHTML = '<span class="bx">' + (icons[type] || "💬") + "</span><span>" + msg + "</span>";
+    wrap.appendChild(b);
+    setTimeout(function () { b.classList.add("out"); setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 260); }, 4200);
+  }
+
+  function bounce(el) {
+    el.classList.remove("bounce");
+    void el.offsetWidth;
+    el.classList.add("bounce");
+  }
+
+  /* ---------------- api ---------------- */
+  function api(method, path, body) {
+    var opts = { method: method, headers: { "Content-Type": "application/json" } };
+    if (body !== undefined) { opts.body = JSON.stringify(body); }
+    return fetch(RESOLVED_API + path, opts).then(function (res) {
+      return res.text().then(function (txt) {
+        var data = null;
+        try { data = JSON.parse(txt); } catch (e) { data = null; }
+        return { status: res.status, ok: res.ok, data: data, raw: txt };
+      });
+    }).catch(function () {
+      return { status: 0, ok: false, data: null, raw: "" };
+    });
+  }
+
+  /* ---------------- boot ---------------- */
+  function boot() {
+    load();
+    fetchInfo().then(function () {
+      if (state.step === "quiz") { enterQuiz(false); }
+      else if (state.step === "done" || state.step === "working") { renderLocked(); }
+      else if (state.step === "result") { resumeResult(); }
+      else { show("screen-cover"); }
+    }).catch(function () {
+      showError("api-down");
+    });
+  }
+
+  function fetchInfo() {
+    return api("GET", "/api/info").then(function (r) {
+      if (r.ok && r.data && r.data.success) {
+        state.info = r.data.info || r.data;
+        state.devMode = !!(r.data.devMode || (r.data.info && r.data.info.devMode));
+        return r.data;
+      }
+      throw new Error("bad-info");
+    });
+  }
+
+  function showError(kind) {
+    var box = $("error-box");
+    var html = "";
+    if (kind === "api-down") {
+      html = '<div class="err-icon">🛠️</div><h1 class="title">Backend is not connected</h1><p class="sub">This quiz is powered by a Cloudflare Worker API, and it looks like the worker URL is not configured yet.</p><p class="muted">Set the <b>API_BASE</b> constant in index.html (or visit the page with <b>?api=&lt;your-worker-url&gt;</b>) to your deployed worker. See the README for the full setup.</p><div class="code-pill">' + RESOLVED_API + '</div><div style="margin-top:24px;display:grid;gap:10px"><button class="button b-blue" onclick="location.reload()">Retry</button></div>';
+    } else if (kind === "session-expired") {
+      html = '<div class="err-icon">⏳</div><h1 class="title">This session has expired</h1><p class="sub">Sessions are temporary and yours ran out. No worries — your answers were never shared.</p><button class="button" onclick="window.__fresh()">Start a New Test</button>';
+    } else {
+      html = '<div class="err-icon">🌀</div><h1 class="title">Something went wrong</h1><p class="sub">Your test answers are safe on this device. Please try again.</p><div style="display:grid;gap:10px"><button class="button" onclick="window.__retry()">Try Again</button></div>';
+    }
+    box.innerHTML = html;
+    show("screen-error");
+  }
+
+  /* ---------------- quiz flow ---------------- */
+  function ensureSession() {
+    if (state.sessionId) { return Promise.resolve(state.sessionId); }
+    return api("POST", "/api/session", {}).then(function (r) {
+      if (!r.ok || !r.data || !r.data.success) { throw new Error("session:fail"); }
+      state.sessionId = r.data.data.sessionId;
+      state.devMode = !!(r.data.devMode || state.devMode);
+      touchStorage(); save();
+      return state.sessionId;
+    });
+  }
+
+  function loadQuestions() {
+    if (state.questions && state.questions.length === 16) {
+      if (state.questions[0] && typeof state.questions[0].text === "string") { return Promise.resolve(state.questions); }
+    }
+    return api("GET", "/api/questions?sessionId=" + encodeURIComponent(state.sessionId)).then(function (r) {
+      if (!r.ok || !r.data || !r.data.success) {
+        if (r.data && r.data.code === "SESSION_EXPIRED") { throw { kind: "session-expired" }; }
+        throw new Error("questions:fail");
+      }
+      state.questions = r.data.data.questions;
+      state.devMode = !!(r.data.devMode || state.devMode);
+      save();
+      return state.questions;
+    });
+  }
+
+  function enterQuiz(forceFromStart) {
+    if (forceFromStart) {
+      resetLocal();
+      return api("POST", "/api/session", {}).then(function (r) {
+        if (!r.ok || !r.data || !r.data.success) { throw new Error("session:fail"); }
+        state.sessionId = r.data.data.sessionId;
+        state.answers = []; state.idx = 0; state.submitted = false; state.step = "quiz";
+        return loadQuestions();
+      }).then(function () { renderQuiz(); }).catch(function (e) {
+        if (e && e.kind === "session-expired") { showError("session-expired"); }
+        else { showError("generic"); }
+      });
+    }
+    var p = state.questions && state.questions.length === 16
+      ? Promise.resolve(state.questions)
+      : state.sessionId ? loadQuestions()
+      : ensureSession().then(function () { return loadQuestions(); });
+    return p.then(function () { renderQuiz(); }).catch(function (e) {
+      if (e && e.kind === "session-expired") { showError("session-expired"); }
+      else { showError("generic"); }
+    });
+  }
+
+  function renderPawTrack() {
+    var track = $("paw-track");
+    track.innerHTML = "";
+    var progress = state.idx; // 0..16
+    var PAWS = 8;
+    for (var s = 0; s < PAWS; s++) {
+      var span = document.createElement("div");
+      span.className = "paw";
+      span.textContent = "🐾";
+      var boundary = (s + 1) * 2;
+      if (progress >= boundary) { span.classList.add("done"); }
+      else if (progress === s * 2 + 1) { span.classList.add("half"); }
+      track.appendChild(span);
+    }
+  }
+
+  function renderQuiz() {
+    if (!state.questions || state.questions.length === 0) { showError("generic"); return; }
+    if (state.idx >= 16) { return finishQuiz(); }
+    var q = state.questions[state.idx];
+    $("q-counter").textContent = "Question " + (state.idx + 1) + " of 16";
+    renderPawTrack();
+
+    var topics = ["You, real quick", "Let's be real", "Nope, too real", "Asking for a friend", "Actually relatable", "Hmm, okay fair", "Be honest", "That's a mood"];
+    var card = $("question-card");
+    card.innerHTML = '<div class="q-topic">' + (topics[state.idx % topics.length]) + "</div>" +
+      '<div class="q-text"></div>' +
+      '<div class="options"></div>';
+
+    var textEl = card.querySelector(".q-text");
+    var optsEl = card.querySelector(".options");
+    textEl.textContent = q.text;
+
+    var prevBtn = document.createElement("div");
+    prevBtn.className = "quiz-foot";
+    prevBtn.innerHTML = '<button class="back-btn" id="btn-back">← Previous</button>' +
+      '<span class="counter">' + (state.answers.filter(function (a) { return a !== undefined && a !== null; }).length) + " answered</span>";
+    card.appendChild(prevBtn);
+    if (state.idx > 0) {
+      $("btn-back").addEventListener("click", function () {
+        if (state.busy) { return; }
+        state.idx = Math.max(0, state.idx - 1);
+        save();
+        renderQuiz();
+      });
+    } else {
+      prevBtn.querySelector("#btn-back").style.visibility = "hidden";
+    }
+
+    var letters = ["A", "B", "C", "D"];
+    for (var i = 0; i < q.options.length && i < 4; i++) {
+      (function (optIdx) {
+        var btn = document.createElement("button");
+        btn.className = "option o" + optIdx;
+        btn.innerHTML = '<span class="letter">' + letters[optIdx] + "</span><span></span>";
+        btn.querySelector("span:last-child").textContent = q.options[optIdx];
+        btn.addEventListener("click", function () {
+          if (state.busy) { return; }
+          bounce(btn);
+          state.busy = true;
+          state.answers[state.idx] = optIdx;
+          state.idx += 1;
+          state.submitted = false;
+          save();
+          setTimeout(function () {
+            state.busy = false;
+            if (state.idx >= 16) { finishQuiz(); } else { renderQuiz(); }
+          }, 260);
+        });
+        optsEl.appendChild(btn);
+      })(i);
+    }
+    show("screen-quiz");
+  }
+
+  function finishQuiz() {
+    state.idx = 16;
+    var answers = [];
+    for (var i = 0; i < 16; i++) { answers.push(typeof state.answers[i] === "number" ? state.answers[i] : 0); }
+    state.answers = answers;
+    save();
+    renderWorking("Submitting your answers", "One sec — we're computing your hidden soul animal...");
+    return ensureSession().then(function () {
+      return api("POST", "/api/answers", { sessionId: state.sessionId, answers: state.answers });
+    }).then(function (r) {
+      if (r.ok && r.data && r.data.success) {
+        state.submitted = true;
+        touchStorage(); save();
+        renderLocked();
+      } else if (r.data && r.data.code === "SESSION_EXPIRED") {
+        showError("session-expired");
+      } else {
+        showError("generic");
+      }
+    }).catch(function () { showError("generic"); });
+  }
+
+  /* ---------------- locked / payment ---------------- */
+  function renderWorking(title, note, actionsHtml) {
+    var box = $("wsg-box");
+    box.innerHTML = '<div class="spinner"></div><h2 style="font-size:19px;font-weight:900;text-align:center">' + title + '</h2><div class="wait-note">' + note + "</div>";
+    if (actionsHtml) {
+      var a = document.createElement("div");
+      a.className = "wait-actions";
+      a.innerHTML = actionsHtml;
+      box.appendChild(a);
+    }
+    show("screen-working");
+  }
+
+  function priceLabel() {
+    var price = (state.info && state.info.price) || "0.38";
+    return "$" + parseFloat(price).toFixed(2);
+  }
+
+  function renderLocked() {
+    var box = $("locked-box");
+    var p = priceLabel();
+    var tips = ["Your Soul Animal", "Your 6-animal affinity chart", "Your personality analysis", "Your social &amp; work style", "Your best &amp; worst animal match"];
+    var devHtml = "";
+    if (state.devMode) {
+      devHtml = '<div class="dev-panel"><h4>🧪 Developer mode — simulation</h4><p class="small-note" style="margin-bottom:10px;color:#7A6400">Simulations only work because the backend is in DEVELOPMENT_MODE. They are disabled automatically in production.</p><div class="dev-btns">' +
+        '<button class="dbtn s" onclick="window.__devSim(\'success\')">Simulate payment_success → unlock result</button>' +
+        '<button class="dbtn c" onclick="window.__devSim(\'cancelled\')">Simulate payment_cancelled</button>' +
+        '<button class="dbtn p" onclick="window.__devSim(\'pending\')">Simulate payment_pending</button>' +
+        '<button class="dbtn f" onclick="window.__devSim(\'failed\')">Simulate payment_failed</button>' +
+        "</div></div>";
+    }
+    box.innerHTML =
+      '<div class="lock-badge" style="text-align:center">🔒</div>' +
+      '<h1 class="title" style="text-align:center;font-size:28px">Your result is ready.</h1>' +
+      '<p class="sub" style="text-align:center">You\'ve completed all 16 questions.</p>' +
+      '<p class="muted" style="text-align:center">Your full Soul Animal personality report is waiting.</p>' +
+      '<div class="chip-row" style="margin:18px 0 4px">' +
+      PREVIEW.map(function (a) { return '<span class="chip">' + a.emoji + " " + a.name + "</span>"; }).join("") +
+      "</div>" +
+      '<ul class="check-list">' + tips.map(function (t) { return "<li><span>✓</span>" + t + "</li>"; }).join("") + "</ul>" +
+      '<p class="price-tag">Unlock for <b>' + p + "</b> · one-time</p>" +
+      '<button class="button btn-pay" id="btn-pay">' +
+        '<span>Unlock My Results — ' + p + "</span><em>Secure payment by PayPal · Instant delivery</em>" +
+      "</button>" +
+      devHtml;
+
+    show("screen-done");
+
+    $("btn-pay").addEventListener("click", function () { bounce(this); beginPayment(); });
+  }
+
+  function beginPayment() {
+    if (state.busy) { return; }
+    state.busy = true;
+    renderWorking("Preparing your payment", "Creating a secure payment link...");
+    ensureSession().then(function () {
+      return api("POST", "/api/payment/create", { sessionId: state.sessionId });
+    }).then(function (r) {
+      state.busy = false;
+      if (!r.ok || !r.data || !r.data.success) {
+        if (r.data && r.data.code === "SESSION_EXPIRED") { return showError("session-expired"); }
+        if (r.data && r.data.code === "NOT_COMPUTED") { return notify("Please finish the quiz first.", "warn"); }
+        if (r.data && r.data.code === "ALREADY_UNLOCKED") { return verifyPayment(); }
+        return showError("generic");
+      }
+      var result = r.data.data || {};
+      state.paymentAttempt = { mode: result.mode, orderId: result.orderId || null, startedAt: Date.now() };
+      try { localStorage.setItem("sap_payment_attempt", JSON.stringify(state.paymentAttempt)); } catch (e) { /* ignore */ }
+      var mode = result.mode;
+
+      if (mode === "dev") {
+        renderWorking("Developer mode", "This backend is running in DEVELOPMENT_MODE. Choose a simulated payment outcome below.",
+          '<div class="dev-panel" style="margin-top:0"><div class="dev-btns">' +
+          '<button class="dbtn s" onclick="window.__devSim(\'success\')">Simulate payment_success</button>' +
+          '<button class="dbtn c" onclick="window.__devSim(\'cancelled\')">Simulate payment_cancelled</button>' +
+          '<button class="dbtn p" onclick="window.__devSim(\'pending\')">Simulate payment_pending</button>' +
+          "</div></div>");
+      } else if (mode === "checkout") {
+        if (result.approvalUrl) {
+          var w = window.open(result.approvalUrl, "_blank", "noopener");
+          if (!w) { window.location.href = result.approvalUrl; }
+          renderWorking("Payment started", "Complete the payment in the PayPal window, then we'll confirm it automatically. This auto-checks every few seconds.",
+            '<button class="button b-blue" onclick="window.__checkPayment(\'manual\')">I\'ve Completed Payment — Check Status</button>');
+          pollCheckout(result.orderId, 0);
+        } else {
+          showError("generic");
+        }
+      } else if (mode === "paypalme") {
+        var w = window.open(result.payUrl, "_blank", "noopener");
+        if (!w) { window.location.href = result.payUrl; }
+        renderWorking("Payment started", "<b>PayPal.Me opened in a new tab.</b><br><br>After you complete the payment, come back and tap the button below. We'll check your payment status on the server — it can take a few minutes to appear.",
+          '<button class="button b-blue" onclick="window.__checkPayment(\'manual\')">I\'ve Paid — Check Payment Status</button>' +
+          '<button class="button b-ghost" onclick="window.__retryPayment()">Open PayPal Again</button>');
+      } else {
+        showError("generic");
+      }
+    }).catch(function () {
+      state.busy = false;
+      showError("generic");
+    });
+  }
+
+  function pollCheckout(orderId, attempt) {
+    if (!state.paymentAttempt || state.paymentAttempt.mode !== "checkout") { return; }
+    if (attempt > 15) { return; }
+    verifyPayment("checkout", { orderId: orderId }).then(function (res) {
+      if (res && res.unlocked) { return; }
+      if (res && res.canRetry) { setTimeout(function () { pollCheckout(orderId, attempt + 1); }, 4000); }
+    });
+  }
+
+  function __devSim(status) {
+    devSim(status);
+  }
+  function devSim(status) {
+    verifyPayment("dev", { devStatus: status }).then(function () { /* handled in verifyPayment */ });
+  }
+
+  function __checkPayment(mode) {
+    verifyPayment(mode);
+  }
+  function __retryPayment() {
+    beginPayment();
+  }
+  function __retry() {
+    load();
+    boot();
+  }
+  function __fresh() {
+    resetLocal();
+    boot();
+  }
+
+  window.__devSim = __devSim;
+  window.__checkPayment = __checkPayment;
+  window.__retryPayment = __retryPayment;
+  window.__retry = __retry;
+  window.__fresh = __fresh;
+
+  function verifyPayment(source, extra) {
+    if (state.busy && source === "poll") { /* allow poll to run */ }
+    var body = { sessionId: state.sessionId };
+    if (extra) { Object.keys(extra).forEach(function (k) { body[k] = extra[k]; }); }
+    renderWorking("Verifying payment", "Contacting the payment server to confirm your purchase...");
+    return ensureSession().then(function () {
+      return api("POST", "/api/payment/verify", body);
+    }).then(function (r) {
+      var d = r.data || {};
+      if (r.ok && d.success && d.locked === false && d.result) {
+        state.result = d.result;
+        showResult();
+        return { unlocked: true };
+      }
+      var code = d.code || "UNKNOWN";
+      if (code === "ALREADY_UNLOCKED") {
+        return fetchResult().then(function (res) {
+          if (res) { return { unlocked: true }; }
+          return { unlocked: false, canRetry: false };
+        });
+      }
+      if (code === "SESSION_EXPIRED") { showError("session-expired"); return { unlocked: false, canRetry: false }; }
+      if (code === "PAYMENT_SUCCESS") { showResult(); return { unlocked: true }; }
+      if (code === "PAYMENT_CANCELLED" && state.paymentAttempt && state.paymentAttempt.mode !== "dev") {
+        renderLocked();
+        notify("Payment cancelled. No problem — your results are still waiting for you. 🔒", "info");
+        return { unlocked: false, canRetry: false };
+      }
+      if (code === "PAYMENT_PENDING") {
+        renderLocked();
+        notify("Your payment is still processing. It usually clears within a few minutes.", "warn");
+        return { unlocked: false, canRetry: true };
+      }
+      if (code === "MANUAL_VERIFICATION_REQUIRED") {
+        renderWorking("Payment received?", "<b>PayPal.Me payments can't be verified automatically.</b><br><br>We check orders manually as they arrive in our PayPal inbox — usually within a few minutes. Tap the button below in a moment to re-check. In the meantime your result stays locked and untouched.",
+          '<button class="button b-blue" onclick="window.__checkPayment(\'manual\')">Check Payment Status Again</button>' +
+          '<button class="button b-ghost" onclick="window.__retryPayment()">Open PayPal Again</button>' +
+          '<p class="small-note" style="margin-top:10px">Paid but still locked? Email us at <b>' + CONFIG.supportEmail + '</b> with your session reference <code>' + state.sessionId.substring(0, 8) + '</code> and we\'ll help you out.</p>');
+        return { unlocked: false, canRetry: true };
+      }
+      if (code === "NETWORK") {
+        renderLocked();
+        notify("Could not reach the verification server. Please check your connection and try again.", "err");
+        return { unlocked: false, canRetry: true };
+      }
+      if (code === "RATE_LIMITED") {
+        renderLocked();
+        notify("Too many verification attempts. Please wait a few minutes.", "err");
+        return { unlocked: false, canRetry: false };
+      }
+      if (source === "poll") { return { unlocked: false, canRetry: true }; }
+      if (code === "PAYMENT_FAILED") {
+        renderLocked();
+        notify("The payment could not be confirmed. If you were charged, we'll sort it out — contact us.", "err");
+        return { unlocked: false, canRetry: false };
+      }
+      if (code === "PAYMENT_CANCELLED") {
+        renderLocked();
+        return { unlocked: false, canRetry: false };
+      }
+      renderLocked();
+      notify("We couldn't confirm the payment right now. Please try again in a minute.", "warn");
+      return { unlocked: false, canRetry: true };
+    }).catch(function () {
+      renderLocked();
+      notify("Network error while verifying payment. Please try again.", "err");
+      return { unlocked: false, canRetry: true };
+    });
+  }
+
+  function fetchResult() {
+    return api("GET", "/api/result?sessionId=" + encodeURIComponent(state.sessionId)).then(function (r) {
+      var d = r.data || {};
+      if (r.ok && d.success && d.locked === false && d.result) {
+        state.result = d.result;
+        showResult();
+        return true;
+      }
+      if (d.code === "SESSION_EXPIRED") { showError("session-expired"); return false; }
+      return false;
+    }).catch(function () { return false; });
+  }
+
+  function resumeResult() {
+    if (state.result) { showResult(); return; }
+    fetchResult().then(function (found) {
+      if (!found) { renderLocked(); }
+    });
+  }
+
+  /* ---------------- result ---------------- */
+  function showResult() {
+    var r = state.result;
+    if (!r) { showError("generic"); return; }
+    var box = $("result-box");
+
+    var affinityHtml = r.affinity.map(function (a, i) {
+      var colors = [
+        ["#FF9EC2", "#FF6FA8"], ["#8FC3EC", "#4E9FE3"], ["#86D2A6", "#2FAE68"],
+        ["#BE9DF0", "#8F5CD8"], ["#FFC46B", "#F2A33C"], ["#98D9D2", "#4FB5AA"]
+      ];
+      var c = colors[i % colors.length];
+      return '<div class="aff-row">' +
+        '<div class="aff-emoji">' + a.emoji + "</div>" +
+        '<div class="aff-name">' + a.name + "</div>" +
+        '<div class="aff-bar" data-pct="' + a.percent + '" data-from="0"><div class="aff-fill" data-c1="' + c[0] + '" data-c2="' + c[1] + '"></div></div>' +
+        '<div class="aff-pct" data-target="' + a.percent + '">0%</div></div>';
+    }).join("");
+
+    var m = r.modules || {};
+    var compatible = r.match || (m.match && m.match.compatible) ? (r.match || m.match) : null;
+    var comp = (compatible && compatible.compatible) || null;
+    var chall = (compatible && compatible.challenging) || null;
+
+    box.innerHTML =
+      '<div class="result-hero">' +
+        '<div class="big-animal">' + r.emoji + "</div>" +
+        "<h1 class='roar'>You're a " + r.name + ".</h1>" +
+        '<div class="r-title">' + r.title + "</div>" +
+        '<p class="r-line">Your Soul Animal is the ' + r.name + ".</p>" +
+      "</div>" +
+
+      '<div class="affinity">' + affinityHtml + "</div>" +
+
+      '<div class="module"><h3>🧬 Your Animal Traits</h3>' +
+        "<p>" + r.intro + "</p>" +
+        '<div class="p-head">Traits</div><div class="traits-list">' +
+        r.traits.map(function (t) { return "<span>" + t + "</span>"; }).join("") + "</div>" +
+        '<div class="p-head">Strengths</div><ul class="strengths-list">' +
+        r.strengths.map(function (s) { return "<li>" + s + "</li>"; }).join("") + "</ul>" +
+        (r.funnyWeakness ? '<div class="funny-card"><div class="lbl">The unflattering truth</div><p>' + r.funnyWeakness + "</p></div>" : "") +
+      "</div>" +
+
+      '<div class="module"><h3>🤝 Your Social & Work Style</h3>' +
+        '<div class="p-head">Social</div><p>' + r.socialStyle + "</p>" +
+        '<div class="p-head">Work &amp; getting things done</div><p>' + r.workStyle + "</p>" +
+        '<div class="p-head">Your relationship style</div><p>' + r.relationshipStyle + "</p>" +
+      "</div>" +
+
+      '<div class="module"><h3>💞 Your Animal Match</h3><div class="match-grid">' +
+        (comp ? '<div class="match-card"><div class="mc-emoji">' + comp.emoji + "</div><div><div class=\"mc-tag\">Your best match</div><h4>" + comp.name + " — " + comp.title + '</h4><p>' + comp.blurb + "</p></div></div>" : "") +
+        (chall ? '<div class="match-card challenging"><div class="mc-emoji">' + chall.emoji + "</div><div><div class=\"mc-tag\">Your fun challenge</div><h4>" + chall.name + " — " + chall.title + '</h4><p>' + chall.blurb + "</p></div></div>" : "") +
+      "</div></div>" +
+
+      '<div class="share-card">' +
+        "<h3>📣 Share Your Result</h3>" +
+        "<p>I just found out I'm a " + r.name + " personality! " + r.emoji + " What's yours?<br>Try the quiz and find your soul animal.</p>" +
+        '<div class="share-actions">' +
+          '<button class="button b-green" onclick="window.__share()">Share</button>' +
+          '<button class="button b-purple" onclick="window.__copyResult()">Copy Result</button>' +
+        "</div>" +
+        '<button class="button b-ghost sm" style="margin-top:12px" onclick="window.__fresh()">Retake the quiz</button>' +
+      "</div>";
+
+    show("screen-result");
+    fireConfetti();
+    animateAffinity();
+
+    state.result = r;
+    touchStorage(); save();
+  }
+
+  function animateAffinity() {
+    var bars = document.querySelectorAll(".aff-bar");
+    var pcts = document.querySelectorAll(".aff-pct");
+    bars.forEach(function (bar) {
+      var fill = bar.querySelector(".aff-fill");
+      fill.style.background = "linear-gradient(90deg," + fill.getAttribute("data-c1") + "," + fill.getAttribute("data-c2") + ")";
+    });
+    setTimeout(function () {
+      bars.forEach(function (bar) {
+        var fill = bar.querySelector(".aff-fill");
+        fill.style.width = bar.getAttribute("data-pct") + "%";
+      });
+    }, 120);
+    pcts.forEach(function (el) {
+      var target = parseInt(el.getAttribute("data-target"), 10) || 0;
+      var start = performance.now();
+      var dur = 1150;
+      function step(now) {
+        var t = Math.min(1, (now - start) / dur);
+        var eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = Math.round(target * eased) + "%";
+        if (t < 1) { requestAnimationFrame(step); }
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* ---------------- share ---------------- */
+  function shareText() {
+    var r = state.result;
+    if (!r) { return ""; }
+    return "I just found out I'm a " + r.name + " personality! " + r.emoji + "\nThat makes me: " + r.title + ".\nTry the quiz and find your soul animal.\n" + CONFIG.productName;
+  }
+
+  function __share() {
+    var text = shareText();
+    if (navigator.share) {
+      navigator.share({ title: CONFIG.productName, text: text, url: window.location.href })
+        .catch(function () { copyToClipboard(text); notify("Couldn't open the share sheet, so we copied the text instead.", "info"); });
+    } else {
+      copyToClipboard(text);
+      notify("Result copied — paste it anywhere! 🐾", "ok");
+    }
+  }
+  function __copyResult() {
+    copyToClipboard(shareText());
+    notify("Result copied — paste it anywhere! 🐾", "ok");
+  }
+  window.__share = __share;
+  window.__copyResult = __copyResult;
+
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(function () { legacyCopy(text); });
+    } else { legacyCopy(text); }
+  }
+  function legacyCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand("copy"); } catch (e) { /* ignore */ }
+    document.body.removeChild(ta);
+  }
+
+  /* ---------------- confetti ---------------- */
+  function fireConfetti() {
+    var root = $("confetti");
+    root.innerHTML = "";
+    var colors = ["#FF7FB4", "#5AA8E6", "#3BB873", "#9C6FE0", "#FFC46B", "#FF6FA8"];
+    var count = window.innerWidth < 480 ? 90 : 140;
+    for (var i = 0; i < count; i++) {
+      var p = document.createElement("i");
+      var size = 7 + Math.random() * 8;
+      p.style.width = size + "px";
+      p.style.height = size * (1.2 + Math.random() * 0.5) + "px";
+      p.style.background = colors[i % colors.length];
+      p.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+      p.style.left = (Math.random() * 100) + "%";
+      p.style.setProperty("--tx", (Math.random() * 220 - 110) + "px");
+      p.style.setProperty("--rot", (Math.random() * 720 - 360) + "deg");
+      p.style.setProperty("--dur", (2.6 + Math.random() * 1.8) + "s");
+      p.style.setProperty("--delay", (Math.random() * 0.7) + "s");
+      p.style.opacity = "0";
+      root.appendChild(p);
+    }
+    setTimeout(function () { root.innerHTML = ""; }, 5200);
+  }
+
+  /* ---------------- boot button ---------------- */
+  $("btn-start").addEventListener("click", function () {
+    bounce(this);
+    enterQuiz(true);
+  });
+
+  window.addEventListener("pageshow", function () {
+    var pa = null;
+    try { pa = JSON.parse(localStorage.getItem("sap_payment_attempt") || "null"); } catch (e) { pa = null; }
+    if (pa && pa.mode === "checkout" && state.step === "working" && state.paymentAttempt && state.paymentAttempt.mode === "checkout") {
+      pollCheckout(pa.orderId, 0);
+    }
+  });
+
+  window.addEventListener("focus", function () {
+    if (state.paymentAttempt && state.paymentAttempt.mode === "checkout" && state.step === "working") {
+      verifyPayment("poll", { orderId: state.paymentAttempt.orderId });
+    }
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>

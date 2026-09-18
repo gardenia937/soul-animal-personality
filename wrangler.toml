@@ -1,0 +1,58 @@
+# ============================================================
+# Your Soul Animal Personality — Cloudflare Worker config
+# Deploy with:  wrangler deploy
+# ============================================================
+name = "soul-animal-api"
+main = "worker.js"
+compatibility_date = "2025-06-01"
+
+# ------------------------------------------------------------
+# D1 database (primary storage). Create it first:
+#   wrangler d1 create soul-animal
+# then copy the database_id here and apply schema.sql.
+# ------------------------------------------------------------
+[[d1_databases]]
+binding = "DB"
+database_name = "soul-animal"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+# ------------------------------------------------------------
+# KV namespace (automatic fallback if D1 is not bound).
+# Create it first:  wrangler kv namespace create SESSION_BACKUP
+# then copy the id here.
+# ------------------------------------------------------------
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+# ------------------------------------------------------------
+# vars (safe to commit)
+# ------------------------------------------------------------
+[vars]
+PAYMENT_PRICE_USD = "0.38"
+SESSION_TTL_MINUTES = "1440"
+PAYPAL_ME_USER = "Katerina2099"
+PAYPAL_MODE = "sandbox"          # "sandbox" during testing -> "live" at launch
+ALLOWED_ORIGIN = "*"             # your GitHub Pages origin, e.g. "https://username.github.io"
+
+# !!! CRITICAL !!!
+# DEVELOPMENT_MODE = "true"  enables simulated payments on the live site.
+# It is meant ONLY for local testing. Before launching set it to "false":
+#   wrangler secret put DEVELOPMENT_MODE   -> false
+DEVELOPMENT_MODE = "false"
+
+# ------------------------------------------------------------
+# Secrets (never commit these; set with wrangler secret put):
+#
+#   wrangler secret put PAYPAL_CLIENT_ID
+#   wrangler secret put PAYPAL_CLIENT_SECRET
+#   wrangler secret put PAYPAL_WEBHOOK_ID
+#   wrangler secret put ADMIN_SECRET
+#
+#   PAYPAL_CLIENT_ID / _SECRET  enable automatic verification
+#                                via the PayPal Orders API (Checkout).
+#   PAYPAL_WEBHOOK_ID            enables server-side webhook unlock.
+#   ADMIN_SECRET                 makes /api/admin/manual-unlock work
+#                                (used to manually confirm PayPal.Me
+#                                payments). Must be >= 16 chars.
+# ------------------------------------------------------------
