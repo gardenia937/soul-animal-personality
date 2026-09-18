@@ -14,7 +14,7 @@ compatibility_date = "2025-06-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "soul-animal"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "68bc3b1d-650b-4398-85ae-9e45fc464538"
 
 # ------------------------------------------------------------
 # KV namespace (automatic fallback if D1 is not bound).
@@ -23,7 +23,7 @@ database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
 # ------------------------------------------------------------
 [[kv_namespaces]]
 binding = "SESSIONS"
-id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id = "55d635a0171b459eb64b741a7febd8cd"
 
 # ------------------------------------------------------------
 # vars (safe to commit)
