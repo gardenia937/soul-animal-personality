@@ -970,30 +970,32 @@ export default {
       } else if (request.method === "GET" && path === "/api/result") {
         response = await handleGetResult(env, url);
       } else if (request.method === "POST") {
-        const body = (await readBody(request)) || {};
-
-        if (path === "/api/session") {
-          if (env.SESSIONS && request.headers.get("CF-Connecting-IP")) {
-            const limited = await rateLimit(env, "rate:session:" + request.headers.get("CF-Connecting-IP"), 20, 600);
-            if (limited) { response = fail("RATE_LIMITED", "Too many sessions. Try again later.", 429, env); }
-            else { response = await handleCreateSession(env); }
-          } else {
-            response = await handleCreateSession(env);
-          }
-        } else if (path === "/api/answers") {
-          response = await handleSubmitAnswers(env, body);
-        } else if (path === "/api/payment/create") {
-          response = await handlePaymentCreate(env, body);
-        } else if (path === "/api/payment/verify") {
-          response = await handlePaymentVerify(env, body);
-        } else if (path === "/api/verify-webhook") {
+        if (path === "/api/verify-webhook") {
           response = await handleWebhook(env, request);
-        } else if (path === "/api/admin/manual-unlock") {
-          response = await handleAdminManualUnlock(env, body);
-        } else if (path === "/api/admin/status") {
-          response = await handleAdminStatus(env, body);
         } else {
-          response = fail("NOT_FOUND", "Endpoint not found.", 404, env);
+          const body = (await readBody(request)) || {};
+
+          if (path === "/api/session") {
+            if (env.SESSIONS && request.headers.get("CF-Connecting-IP")) {
+              const limited = await rateLimit(env, "rate:session:" + request.headers.get("CF-Connecting-IP"), 20, 600);
+              if (limited) { response = fail("RATE_LIMITED", "Too many sessions. Try again later.", 429, env); }
+              else { response = await handleCreateSession(env); }
+            } else {
+              response = await handleCreateSession(env);
+            }
+          } else if (path === "/api/answers") {
+            response = await handleSubmitAnswers(env, body);
+          } else if (path === "/api/payment/create") {
+            response = await handlePaymentCreate(env, body);
+          } else if (path === "/api/payment/verify") {
+            response = await handlePaymentVerify(env, body);
+          } else if (path === "/api/admin/manual-unlock") {
+            response = await handleAdminManualUnlock(env, body);
+          } else if (path === "/api/admin/status") {
+            response = await handleAdminStatus(env, body);
+          } else {
+            response = fail("NOT_FOUND", "Endpoint not found.", 404, env);
+          }
         }
       } else {
         response = fail("NOT_FOUND", "Endpoint not found.", 404, env);
