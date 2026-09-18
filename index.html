@@ -971,9 +971,13 @@
 
   function __share() {
     var text = shareText();
-    if (navigator.share) {
+    if (typeof navigator.share === "function" && window.isSecureContext) {
       navigator.share({ title: CONFIG.productName, text: text, url: window.location.href })
-        .catch(function () { copyToClipboard(text); notify("Couldn't open the share sheet, so we copied the text instead.", "info"); });
+        .catch(function (err) {
+          if (err && err.name === "AbortError") { return; }
+          copyToClipboard(text);
+          notify("Sharing isn't available here, so we copied your result text to the clipboard. Paste it anywhere!", "info");
+        });
     } else {
       copyToClipboard(text);
       notify("Result copied — paste it anywhere! 🐾", "ok");
