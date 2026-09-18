@@ -787,12 +787,13 @@ async function handlePaymentVerify(env, body) {
   const mode = resolveMode(env);
   const session = await getSession(env, sessionId);
   if (!session) { return fail("SESSION_INVALID", "Unknown session.", 200, env); }
-  if (now() > session.expires_at) { return fail("SESSION_EXPIRED", "Session expired.", 200, env); }
 
   if (session.payment_status === "paid") {
     const result = buildResultPayload(session, session.scores || {});
     return json({ success: true, locked: false, result: result, code: "ALREADY_UNLOCKED" }, 200, env);
   }
+
+  if (now() > session.expires_at) { return fail("SESSION_EXPIRED", "Session expired.", 200, env); }
 
   // Enforce a cap on verification attempts per session (duplicate/abuse guard).
   const vcount = (session.verify_count || 0) + 1;
@@ -858,12 +859,12 @@ async function handleGetResult(env, url) {
   const sessionId = url.searchParams.get("sessionId") || "";
   const session = await getSession(env, sessionId);
   if (!session) { return json({ success: false, locked: true, code: "SESSION_INVALID" }, 200, env); }
-  if (now() > session.expires_at) { return json({ success: false, locked: true, code: "SESSION_EXPIRED" }, 200, env); }
-  if (session.payment_status !== "paid") {
-    return json({ success: false, locked: true, code: "LOCKED" }, 200, env);
+  if (session.payment_status === "paid") {
+    const result = buildResultPayload(session, session.scores || {});
+    return json({ success: true, locked: false, result: result }, 200, env);
   }
-  const result = buildResultPayload(session, session.scores || {});
-  return json({ success: true, locked: false, result: result }, 200, env);
+  if (now() > session.expires_at) { return json({ success: false, locked: true, code: "SESSION_EXPIRED" }, 200, env); }
+  return json({ success: false, locked: true, code: "LOCKED" }, 200, env);
 }
 
 /* ------------------------------------------------------------------ */

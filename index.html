@@ -192,6 +192,9 @@
   .share-card p{font-size:14.5px;color:var(--ink-soft);font-weight:600;line-height:1.5;margin-bottom:16px}
   .share-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .share-actions .button{font-size:15px;padding:14px;min-height:52px}
+  .shared-banner{background:linear-gradient(135deg,#fffbea,#ffe8d6);border:1.5px dashed var(--accent);border-radius:var(--radius);padding:16px 18px;margin-top:18px;text-align:center}
+  .shared-banner .sb-title{font-size:16px;font-weight:900;color:var(--ink);margin-bottom:4px}
+  .shared-banner .sb-sub{font-size:13.5px;color:var(--ink-soft);font-weight:600;line-height:1.5}
 
   /* ---------- banner / toast ---------- */
   #banner-wrap{position:fixed;top:calc(14px + env(safe-area-inset-top));left:0;right:0;display:flex;flex-direction:column;gap:10px;align-items:center;z-index:80;pointer-events:none;padding:0 16px}
@@ -345,7 +348,9 @@
     submitted: false,
     devMode: false,
     busy: false,
-    paymentAttempt: null
+    paymentAttempt: null,
+    shared: false,
+    sharedId: null
   };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -391,14 +396,14 @@
   }
 
   /* ---------------- ui helpers ---------------- */
-  function show(screen) {
+function show(screen) {
     var s = ["screen-cover","screen-quiz","screen-done","screen-working","screen-result","screen-error"];
     s.forEach(function (id) { $(id).classList.remove("active"); });
     $(screen).classList.add("active");
     state.step = screen.replace("screen-", "");
+    if (state.shared) { return; }
     touchStorage();
     save();
-    window.scrollTo({ top: 0, behavior: "auto" });
   }
 
   var bannerTimer = null;
@@ -437,10 +442,13 @@
   /* ---------------- boot ---------------- */
   function boot() {
     load();
+    state.shared = false; state.sharedId = null;
     try {
       var pa = JSON.parse(localStorage.getItem("sap_payment_attempt") || "null");
       if (pa && pa.mode === "checkout") { state.paymentAttempt = pa; }
     } catch (e) { /* ignore */ }
+    var sharedId = getUrlParam("r");
+    if (sharedId) { return loadSharedResult(sharedId); }
     fetchInfo().then(function () {
       if (state.step === "quiz") { enterQuiz(false); }
       else if (state.step === "done" || state.step === "working") {
@@ -455,6 +463,44 @@
       showError("api-down");
     });
   }
+
+  function getUrlParam(name) {
+    try { return new URLSearchParams(window.location.search).get(name) || null; } catch (e) { return null; }
+  }
+
+  function resultUrl() {
+    var id = state.sharedId || state.sessionId;
+    return (location.origin + location.pathname + "?r=" + encodeURIComponent(id));
+  }
+
+  function loadSharedResult(sid) {
+    return api("GET", "/api/result?sessionId=" + encodeURIComponent(sid)).then(function (r) {
+      var d = r.data || {};
+      if (r.ok && d.success && d.locked === false && d.result) {
+        state.shared = true;
+        state.sharedId = sid;
+        state.result = d.result;
+        showResult();
+      } else {
+        renderSharedUnavailable();
+      }
+    }).catch(function () {
+      renderSharedUnavailable();
+    });
+  }
+
+  function renderSharedUnavailable() {
+    var box = $("error-box");
+    box.innerHTML = '<div class="err-icon">🔗</div><h1 class="title">This share link is out of date</h1><p class="sub">The shared result is no longer available (it may have expired or the payment was never completed).</p><button class="button" onclick="window.__startOwnTest()">Take the Quiz Yourself</button>';
+    show("screen-error");
+  }
+
+  function __startOwnTest() {
+    try { history.replaceState(null, "", location.pathname); } catch (e) { /* ignore */ }
+    resetLocal();
+    boot();
+  }
+  window.__startOwnTest = __startOwnTest;
 
   function fetchInfo() {
     return api("GET", "/api/info").then(function (r) {
@@ -886,13 +932,15 @@
     var compatible = r.match || (m.match && m.match.compatible) ? (r.match || m.match) : null;
     var comp = (compatible && compatible.compatible) || null;
     var chall = (compatible && compatible.challenging) || null;
+    var shared = !!state.shared;
 
     box.innerHTML =
+      (shared ? '<div class="shared-banner"><div class="sb-title">🔗 Someone shared this result with you</div><div class="sb-sub">They discovered they\u2019re a ' + r.name + '. Find out which soul animal <b>you</b> are!</div></div>' : "") +
       '<div class="result-hero">' +
         '<div class="big-animal">' + r.emoji + "</div>" +
-        "<h1 class='roar'>You're a " + r.name + ".</h1>" +
+        '<h1 class="roar">' + (shared ? "They're" : "You're") + " a " + r.name + ".</h1>" +
         '<div class="r-title">' + r.title + "</div>" +
-        '<p class="r-line">Your Soul Animal is the ' + r.name + ".</p>" +
+        '<p class="r-line">' + (shared ? "This result belongs to the person who shared the link." : "Your Soul Animal is the " + r.name + ".") + "</p>" +
       "</div>" +
 
       '<div class="affinity">' + affinityHtml + "</div>" +
@@ -922,9 +970,11 @@
         "<p>I just found out I'm a " + r.name + " personality! " + r.emoji + " What's yours?<br>Try the quiz and find your soul animal.</p>" +
         '<div class="share-actions">' +
           '<button class="button b-green" onclick="window.__share()">Share</button>' +
-          '<button class="button b-purple" onclick="window.__copyResult()">Copy Result</button>' +
+          '<button class="button b-purple" onclick="window.__copyResult()">Copy Link</button>' +
         "</div>" +
-        '<button class="button b-ghost sm" style="margin-top:12px" onclick="window.__fresh()">Retake the quiz</button>' +
+        (shared
+          ? '<button class="button b-blue" style="margin-top:12px;min-height:52px" onclick="window.__startOwnTest()">Take the Quiz — Find YOUR Animal 🐾</button>'
+          : '<button class="button b-ghost sm" style="margin-top:12px" onclick="window.__fresh()">Retake the quiz</button>') +
       "</div>";
 
     show("screen-result");
@@ -932,6 +982,7 @@
     animateAffinity();
 
     state.result = r;
+    if (shared) { return; }
     touchStorage(); save();
   }
 
@@ -970,22 +1021,23 @@
   }
 
   function __share() {
+    var url = resultUrl();
     var text = shareText();
     if (typeof navigator.share === "function" && window.isSecureContext) {
-      navigator.share({ title: CONFIG.productName, text: text, url: window.location.href })
+      navigator.share({ title: CONFIG.productName, text: text, url: url })
         .catch(function (err) {
           if (err && err.name === "AbortError") { return; }
-          copyToClipboard(text);
-          notify("Sharing isn't available here, so we copied your result text to the clipboard. Paste it anywhere!", "info");
+          copyToClipboard(url);
+          notify("Open in any app by pasting this link.", "info");
         });
     } else {
-      copyToClipboard(text);
-      notify("Result copied — paste it anywhere! 🐾", "ok");
+      copyToClipboard(url);
+      notify("Link copied — paste it anywhere to share! 🐾", "ok");
     }
   }
   function __copyResult() {
-    copyToClipboard(shareText());
-    notify("Result copied — paste it anywhere! 🐾", "ok");
+    copyToClipboard(resultUrl());
+    notify("Result link copied — anyone who opens it can see this page and take the quiz themselves! 🔗", "ok");
   }
   window.__share = __share;
   window.__copyResult = __copyResult;
