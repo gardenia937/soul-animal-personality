@@ -566,8 +566,8 @@ async function paypalCreateOrder(env, sessionId) {
         brand_name: "Your Soul Animal Personality",
         user_action: "PAY_NOW",
         shipping_preference: "NO_SHIPPING",
-        return_url: (env && env.ALLOWED_ORIGIN && env.ALLOWED_ORIGIN !== "*") ? env.ALLOWED_ORIGIN + "/" : null,
-        cancel_url: (env && env.ALLOWED_ORIGIN && env.ALLOWED_ORIGIN !== "*") ? env.ALLOWED_ORIGIN + "/" : null
+        return_url: (env && env.PUBLIC_BASE_URL) ? env.PUBLIC_BASE_URL + "/" : null,
+        cancel_url: (env && env.PUBLIC_BASE_URL) ? env.PUBLIC_BASE_URL + "/" : null
       }
     })
   });

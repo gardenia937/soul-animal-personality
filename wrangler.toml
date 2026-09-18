@@ -33,7 +33,8 @@ PAYMENT_PRICE_USD = "0.38"
 SESSION_TTL_MINUTES = "1440"
 PAYPAL_ME_USER = "gardenia2099"
 PAYPAL_MODE = "sandbox"          # "sandbox" during testing -> "live" at launch
-ALLOWED_ORIGIN = "*"             # your GitHub Pages origin, e.g. "https://username.github.io"
+ALLOWED_ORIGIN = "*"             # your frontend origin, e.g. "https://username.github.io"
+PUBLIC_BASE_URL = "https://gardenia937.github.io/soul-animal-personality"  # full public URL of the site (PayPal return-to page)
 
 # !!! CRITICAL !!!
 # DEVELOPMENT_MODE = "true"  enables simulated payments on the live site.
