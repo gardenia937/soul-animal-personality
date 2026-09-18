@@ -791,7 +791,7 @@ async function handlePaymentVerify(env, body) {
 
   if (session.payment_status === "paid") {
     const result = buildResultPayload(session, session.scores || {});
-    return ok({ locked: false, result: result, code: "ALREADY_UNLOCKED" }, env);
+    return json({ success: true, locked: false, result: result, code: "ALREADY_UNLOCKED" }, 200, env);
   }
 
   // Enforce a cap on verification attempts per session (duplicate/abuse guard).
@@ -811,7 +811,7 @@ async function handlePaymentVerify(env, body) {
       const didUnlock = await atomicUnlock(env, sessionId, { payment_method: "dev_sim", payment_id: "dev-sim-" + now() });
       const fresh = didUnlock ? await getSession(env, sessionId) : session;
       const result = buildResultPayload(fresh, fresh.scores || {});
-      return ok({ locked: false, result: result, code: "PAYMENT_SUCCESS" }, env);
+      return json({ success: true, locked: false, result: result, code: "PAYMENT_SUCCESS" }, 200, env);
     }
     if (dev === "cancelled") { return fail("PAYMENT_CANCELLED", "Payment was cancelled.", 200, env); }
     if (dev === "pending") { return fail("PAYMENT_PENDING", "Payment is still processing.", 200, env); }
@@ -839,7 +839,7 @@ async function handlePaymentVerify(env, body) {
       });
       const fresh = await getSession(env, sessionId);
       const result = buildResultPayload(fresh, fresh.scores || {});
-      return ok({ locked: false, result: result, code: didUnlock ? "PAYMENT_SUCCESS" : "ALREADY_UNLOCKED" }, env);
+      return json({ success: true, locked: false, result: result, code: didUnlock ? "PAYMENT_SUCCESS" : "ALREADY_UNLOCKED" }, 200, env);
     } catch (e) {
       return fail("PAYMENT_VERIFY_ERROR", "Verification failed. Please try again in a minute.", 200, env);
     }
@@ -849,7 +849,7 @@ async function handlePaymentVerify(env, body) {
   if (session.payment_status === "paid") {
     const fresh = await getSession(env, sessionId);
     const result = buildResultPayload(fresh, fresh.scores || {});
-    return ok({ locked: false, result: result, code: "ALREADY_UNLOCKED" }, env);
+    return json({ success: true, locked: false, result: result, code: "ALREADY_UNLOCKED" }, 200, env);
   }
   return fail("MANUAL_VERIFICATION_REQUIRED", "PayPal.Me payments are confirmed manually on the server after funds arrive.", 200, env);
 }
