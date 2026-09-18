@@ -1,0 +1,52 @@
+{
+ "main_module": "worker.js",
+ "bindings": [
+  {
+   "name": "DB",
+   "type": "d1",
+   "id": "68bc3b1d-650b-4398-85ae-9e45fc464538",
+   "database_name": "soul-animal",
+   "database_id": "68bc3b1d-650b-4398-85ae-9e45fc464538"
+  },
+  {
+   "name": "SESSIONS",
+   "type": "kv_namespace",
+   "namespace_id": "55d635a0171b459eb64b741a7febd8cd"
+  },
+  {
+   "name": "PAYMENT_PRICE_USD",
+   "type": "plain_text",
+   "text": "0.38"
+  },
+  {
+   "name": "SESSION_TTL_MINUTES",
+   "type": "plain_text",
+   "text": "1440"
+  },
+  {
+   "name": "PAYPAL_ME_USER",
+   "type": "plain_text",
+   "text": "gardenia2099"
+  },
+  {
+   "name": "PAYPAL_MODE",
+   "type": "plain_text",
+   "text": "live"
+  },
+  {
+   "name": "ALLOWED_ORIGIN",
+   "type": "plain_text",
+   "text": "https://gardenia937.github.io"
+  },
+  {
+   "name": "DEVELOPMENT_MODE",
+   "type": "plain_text",
+   "text": "false"
+  },
+  {
+   "name": "PUBLIC_BASE_URL",
+   "type": "plain_text",
+   "text": "https://gardenia937.github.io/soul-animal-personality"
+  }
+ ]
+}
