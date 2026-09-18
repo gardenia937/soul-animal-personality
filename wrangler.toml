@@ -31,7 +31,7 @@ id = "55d635a0171b459eb64b741a7febd8cd"
 [vars]
 PAYMENT_PRICE_USD = "0.38"
 SESSION_TTL_MINUTES = "1440"
-PAYPAL_ME_USER = "Katerina2099"
+PAYPAL_ME_USER = "gardenia2099"
 PAYPAL_MODE = "sandbox"          # "sandbox" during testing -> "live" at launch
 ALLOWED_ORIGIN = "*"             # your GitHub Pages origin, e.g. "https://username.github.io"
 

@@ -120,7 +120,7 @@ No emails, no names, no accounts. Sessions auto-expire server-side.
 
 Manual-unlock mode (PayPal.Me, works immediately):
 1. Set a strong secret: `wrangler secret put ADMIN_SECRET` (≥16 random chars).
-2. On the cover page the payment button already points to `https://www.paypal.com/paypalme/Katerina2099/0.38`.
+2. On the cover page the payment button already points to `https://www.paypal.com/paypalme/gardenia2099/0.38`.
 3. When a payment appears in your PayPal.Me inbox, run the manual unlock with the session id:
    ```
    curl -X POST https://your-worker.workers.dev/api/admin/manual-unlock \
@@ -151,7 +151,7 @@ Note on $0.38: PayPal transaction-fee math makes this a low-margin product by de
 |---|---|---|
 | `PAYMENT_PRICE_USD` | vars | price (default 0.38) |
 | `SESSION_TTL_MINUTES` | vars | session lifetime (default 1440) |
-| `PAYPAL_ME_USER` | vars | PayPal.Me handle (default Katerina2099) |
+| `PAYPAL_ME_USER` | vars | PayPal.Me handle (default gardenia2099) |
 | `PAYPAL_MODE` | vars | sandbox / live |
 | `ALLOWED_ORIGIN` | vars | `*` or your GitHub Pages origin |
 | `DEVELOPMENT_MODE` | vars/secret | "true" for tests, **"false" at launch** |

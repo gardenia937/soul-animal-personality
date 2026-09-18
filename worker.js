@@ -632,7 +632,7 @@ function sessionTtl(env) {
   return (isNaN(t) || t <= 0) ? SESSION_TTL_MINUTES : t;
 }
 function paypalMeUser(env) {
-  return env.PAYPAL_ME_USER || "Katerina2099";
+  return env.PAYPAL_ME_USER || "gardenia2099";
 }
 function adminUnlockEnabled(env) {
   return !!(env.ADMIN_SECRET && env.ADMIN_SECRET.length >= 16);
