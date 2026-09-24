@@ -1,0 +1,41 @@
+# ============================================================
+# Peekiva "What Are We, Really?" — Cloudflare Worker config
+# 中文说明: 把 database_id 换成你新建 D1 返回的 id (见 README),
+# 再执行 schema.sql, 然后部署。Deploy with: wrangler deploy
+# ============================================================
+name = "what-are-we-really-api"
+main = "worker/index.js"
+compatibility_date = "2025-06-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "what-are-we-really"
+# ↓ `wrangler d1 create what-are-we-really` 返回后填写 (中文: D1 数据库 ID)
+database_id = "b37fffb3-52ff-46b5-9818-7660934b58f0"
+
+[vars]
+# 价格只以这里为准, 前端传来的金额一律忽略 (中文: 改价格只改这里)
+PRICE_USD = "0.38"
+CURRENCY = "USD"
+# PayPal 模式: 测试期 "sandbox", 正式 "live" (凭据已实测为 live)
+PAYPAL_MODE = "live"
+# 前端地址 (中文: GitHub Pages 或 Cloudflare Pages 给你的 https 地址, 结尾不带 /)
+ALLOWED_ORIGIN = "https://gardenia937.github.io"
+PUBLIC_BASE_URL = "https://gardenia937.github.io/soul-animal-personality/peekiva-relationship-test"
+# 品牌与外链 (不要改 Discover 目标)
+DISCOVER_URL = "https://peekiva.com"
+PAYPAL_ME_USER = "gardenia2099"
+SUPPORT_EMAIL = "gardennia973@gmail.com"
+
+# ------------------------------------------------------------
+# Secrets (绝不提交到仓库, 用 wrangler secret put 设置):
+#   wrangler secret put PAYPAL_CLIENT_ID
+#   wrangler secret put PAYPAL_CLIENT_SECRET
+#   wrangler secret put PAYPAL_WEBHOOK_ID
+#   wrangler secret put ADMIN_SECRET   (≥16位, 用于人工兜底解锁)
+# 在哪里获取: PayPal Developer Dashboard → REST App → Client ID/Secret;
+# Webhook: PayPal Dashboard → Webhooks → 添加
+#   https://你的Worker域名.workers.dev/api/webhook 的三个事件
+#   (CHECKOUT.ORDER.APPROVED / PAYMENT.CAPTURE.COMPLETED / PAYMENT.CAPTURE.DENIED)
+# 注意部署铁律: 每次上传脚本后 secrets 会被剥离, 必须逐条重绑 (见 README)。
+# ------------------------------------------------------------
