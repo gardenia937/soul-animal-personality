@@ -1,8 +1,0 @@
-# 密钥与本地配置绝不进仓库 (wrangler.toml 只放占位符/GitHub Pages 地址, 可提交)
-.dev.vars
-*.secret.txt
-*admin-secret*
-*cf-token*
-*paypal-secret*
-*webhook-id*
-node_modules/
